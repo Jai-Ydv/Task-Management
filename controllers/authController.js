@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const Task = require('../models/taskModel');
 const redisClient = require('../config/redisClient');
+const { sendEmail } = require('../config/nodemailer');
 
 exports.register = async (req, res) => {
     const { username, email, password, role } = req.body;
@@ -17,7 +18,11 @@ exports.register = async (req, res) => {
         console.log("running",newpassword)
         const newUser = new User({ username, email, password:newpassword, role });
         await newUser.save();
-        console.log("running",newUser)
+        sendEmail(
+            email, 
+            'Welcome to Task Management!',
+            `Hello ${username},\n\nThank you for registering on Task Manager! Your account has been created successfully.` 
+        );
         const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({ token });
     } catch (err) {

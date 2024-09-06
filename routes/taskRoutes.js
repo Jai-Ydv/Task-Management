@@ -33,7 +33,7 @@ router.put('/update/:id',generalLimiter, authMiddleware,validateId,validateTaskU
 router.delete('/delete/:id',generalLimiter, authMiddleware,validateId,deleteTask);
 
 // Route to get filter tasks (Authenticated users can view their tasks)
-router.get('/search', generalLimiter, authMiddleware, search);
+router.post('/search', generalLimiter, authMiddleware, search);
 
 // Single route for task statistics based on user role
 router.get('/statistics',generalLimiter, authMiddleware, getTaskStatistics);

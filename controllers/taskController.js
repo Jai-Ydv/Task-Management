@@ -165,7 +165,7 @@ exports.getTaskStatistics = async (req, res) => {
     try {
         let stats;
 
-        if (req.user.role === 'Admin') {
+        if (userRole === 'Admin') {
             // Admin: Overall task statistics
             const totalTasks = await Task.countDocuments();
             const completedTasks = await Task.countDocuments({ status: 'Completed' });
@@ -178,7 +178,7 @@ exports.getTaskStatistics = async (req, res) => {
                 pendingTasks,
                 inProgressTasks
             };
-        } else if (req.user.role === 'Manager') {
+        } else if (userRole=== 'Manager') {
             // Manager: Task statistics Manager
             const tasks = await Task.find({ assignedBy: userId });
             const totalTasks = tasks.length;
